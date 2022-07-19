@@ -1,19 +1,29 @@
 #include <iostream>
+#include <map>
 
-int fibonacciNumberIterative(int n);
+int fibonacciNumberIterative(int n, int& noAddOps);
+int fibonacciNumberNaiveRecursive(int n, int& noAddOps);
+int fibonacciNumberMemoizationRecursive(int n, int& noAddOps, std::map<int, int>& cache);
 bool testFibonacciNumberIterative();
+bool testFibonacciNumberNaiveRecursive();
+bool testFibonacciNumberMemoizationRecursive();
 
 int main() {
 
 	std::cout << std::endl << "Iterative approach:\t" << testFibonacciNumberIterative() 
-		<< "\tO(n)" << std::endl;
+		<< "\tO(n)" << std::endl << std::endl;
+
+	std::cout << std::endl << "Naive recursive approach:\t" << testFibonacciNumberNaiveRecursive()
+		<< "\tO(n^2)" << std::endl << std::endl;
+
+	std::cout << std::endl << "Memoization recursive approach:\t" << testFibonacciNumberMemoizationRecursive()
+		<< "\tO(?)" << std::endl << std::endl;
 
 	return 0;
 }
 
-int fibonacciNumberIterative(int n) {
+int fibonacciNumberIterative(int n, int& noAddOps) {
 
-	int noAdditionOperations = 0;
 	int previousNumber = 0;
 	int currentNumber = 1;
 	int nextNumber;
@@ -27,29 +37,102 @@ int fibonacciNumberIterative(int n) {
 			nextNumber = previousNumber + currentNumber;
 			previousNumber = currentNumber;
 			currentNumber = nextNumber;
-			noAdditionOperations++;
+			noAddOps++;
 		}
 	}
-
-	std::cout << "n: " << n << "\tNumber of addition operations: " << noAdditionOperations << std::endl;
 
 	return nextNumber;
 }
 
+int fibonacciNumberNaiveRecursive(int n, int& noAddOps) {
+
+	int number = 0;
+
+	if (n == 0) {
+		number = 0;
+	} else if (n == 1) {
+		number = 1;
+	} else {
+		number = fibonacciNumberNaiveRecursive(n - 1, noAddOps) + fibonacciNumberNaiveRecursive(n - 2, noAddOps);
+		noAddOps++;
+	}
+
+	return number;
+}
+
+int fibonacciNumberMemoizationRecursive(int n, int& noAddOps, std::map<int, int>& cache) {
+	
+	int number = 0;
+
+	if (n == 0) {
+		number = 0;
+	} else if (n == 1) {
+		number = 1;
+	} else {
+		if (cache.find(n) != cache.end()) { // has it already been calculated?
+			number = cache.at(n);
+		} else {
+			number = fibonacciNumberMemoizationRecursive(n - 1, noAddOps, cache) + fibonacciNumberMemoizationRecursive(n - 2, noAddOps, cache);
+			cache.insert({n,number});
+			noAddOps++;
+		}
+	}
+
+	return number;
+}
+
 bool testFibonacciNumberIterative() {
 
-	bool testResult = 
-		0 == fibonacciNumberIterative(0) &&
-		1 == fibonacciNumberIterative(1) &&
-		1 == fibonacciNumberIterative(2) &&
-		2 == fibonacciNumberIterative(3) &&
-		3 == fibonacciNumberIterative(4) &&
-		5 == fibonacciNumberIterative(5) &&
-		8 == fibonacciNumberIterative(6) &&
-		13 == fibonacciNumberIterative(7) &&
-		21 == fibonacciNumberIterative(8) &&
-		34 == fibonacciNumberIterative(9) &&
-		55 == fibonacciNumberIterative(10);
+	int testInput[] = { 0,1,2,3,4,5,6,7,8,9,10,20,30 };
+	int targetOutput[] = { 0,1,1,2,3,5,8,13,21,34,55,6765,832040 };
+	int currentNumber;
+	bool testResult = true;
+	int noAdditionOps = 0;
+
+	for (int i = 0; i < sizeof testInput / sizeof testInput[0]; i++) {
+		noAdditionOps = 0;
+		currentNumber = fibonacciNumberIterative(testInput[i], noAdditionOps);
+		testResult = testResult && (currentNumber == targetOutput[i]);
+		std::cout << "n: " << testInput[i] << "\tFibonacci number: " << currentNumber << "\tNumber of addition operations: " << noAdditionOps << std::endl;
+	}
+
+	return testResult;
+
+}
+
+bool testFibonacciNumberNaiveRecursive() {
+
+	int testInput[] = { 0,1,2,3,4,5,6,7,8,9,10,20,30 };
+	int targetOutput[] = { 0,1,1,2,3,5,8,13,21,34,55,6765,832040 };
+	bool testResult = true;
+	int noAdditionOps = 0;
+	int currentNumber;
+
+	for (int i = 0; i < sizeof testInput / sizeof testInput[0]; i++) {
+		noAdditionOps = 0;
+		currentNumber = fibonacciNumberNaiveRecursive(testInput[i], noAdditionOps);
+		testResult = testResult && (currentNumber == targetOutput[i]);
+		std::cout << "n: " << testInput[i] << "\tFibonacci number: " << currentNumber << "\tNumber of addition operations: " << noAdditionOps << std::endl;
+	}
+
+	return testResult;
+}
+
+bool testFibonacciNumberMemoizationRecursive() {
+
+	int testInput[] = { 0,1,2,3,4,5,6,7,8,9,10,20,30 };
+	int targetOutput[] = { 0,1,1,2,3,5,8,13,21,34,55,6765,832040 };
+	bool testResult = true;
+	int noAdditionOps = 0;
+	std::map<int, int> cache;
+	int currentNumber;
+
+	for (int i = 0; i < sizeof testInput / sizeof testInput[0]; i++) {
+		cache.clear();
+		currentNumber = fibonacciNumberMemoizationRecursive(testInput[i], noAdditionOps, cache);
+		testResult = testResult && (currentNumber == targetOutput[i]);
+		std::cout << "n: " << testInput[i] << "\tFibonacci number: " << currentNumber << "\tNumber of addition operations: " << noAdditionOps << std::endl;
+	}
 
 	return testResult;
 }
