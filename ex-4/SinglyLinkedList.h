@@ -8,10 +8,11 @@ public:
 	SinglyLinkedList getTail();
 	void append(int newNumber);
 	void insert(int index, int newNumber);
+	void remove(int index);
 	void displayAll();
 
 private:
-	struct Node { // This structure is named "myDataType"
+	struct Node {
 		int data;
 		Node* nextNode;
 	};

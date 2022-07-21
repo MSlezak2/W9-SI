@@ -18,12 +18,12 @@ int SinglyLinkedList::getLength() {
 
 SinglyLinkedList SinglyLinkedList::getTail() {
 	SinglyLinkedList tail;
-	//Node* currentNode = head;
+	Node* currentNode = head;
 
-	//for (int i = 0; i < length; i++) {
-	//	currentNode = iterate(currentNode);
-	//	tail.append
-	//}
+	for (int i = 0; i < length - 1; i++) {
+		currentNode = iterate(currentNode);
+		tail.append(currentNode->data);
+	}
 
 	return tail;
 }
@@ -33,7 +33,7 @@ void SinglyLinkedList::append(int newNumber) {
 
 	if (last != nullptr) { // if list is not empty, it means we should update the last element's pointer
 		last->nextNode = newNodePtr;
-	} else {
+	} else { // if it is, the new element becomes the head of the list
 		head = newNodePtr;
 	}
 	last = newNodePtr;
@@ -70,6 +70,44 @@ void SinglyLinkedList::insert(int index, int newNumber) {
 		length++;
 	} else {
 		//TODO: Maybe throw exception or sth?
+		std::cout << "Index is out of bounds" << std::endl;
+	}
+}
+
+void SinglyLinkedList::remove(int index) {
+	if (index >= 0 && index < length) {
+		if (index == 0 && index == length - 1) { // remove the only element
+			delete head;
+			head = nullptr;
+			last = nullptr;
+		} else if (index == 0) { // remove from the beginning
+			Node* nextNode = head->nextNode;
+			delete head;
+			head = nextNode;
+		} else if (index == length - 1) { // remove from the end 
+			delete last;
+			Node* currentNode = head;
+			for (int i = 0; i < length - 2; i++) {
+				currentNode = iterate(currentNode);
+			}
+			last = currentNode;
+			last->nextNode = nullptr;
+		} else { // remove from the middle
+			Node* currentNode = head;
+			Node* previousNode; 
+			Node* nextNode;
+			for (int i = 0; i < index - 1; i++) {
+				currentNode = iterate(currentNode);
+			}
+			previousNode = currentNode;
+			currentNode = iterate(currentNode);
+			nextNode = iterate(currentNode);
+			delete currentNode;
+			previousNode->nextNode = nextNode; 
+		}
+
+		length--;
+	} else {
 		std::cout << "Index is out of bounds" << std::endl;
 	}
 }
