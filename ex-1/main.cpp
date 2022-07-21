@@ -4,6 +4,7 @@
 int fibonacciNumberIterative(int n, int& noAddOps);
 int fibonacciNumberNaiveRecursive(int n, int& noAddOps);
 int fibonacciNumberMemoizationRecursive(int n, int& noAddOps, std::map<int, int>& cache);
+int fibonacciNumberTailRecursive(int n, int& noAddOps, int& acc);
 bool testFibonacciNumberIterative();
 bool testFibonacciNumberNaiveRecursive();
 bool testFibonacciNumberMemoizationRecursive();
@@ -79,6 +80,18 @@ int fibonacciNumberMemoizationRecursive(int n, int& noAddOps, std::map<int, int>
 	}
 
 	return number;
+}
+
+int fibonacciNumberTailRecursive(int n, int& noAddOps, int& acc) {
+
+	if (n == 0) {
+		return 0;
+	} else if (n == 1) {
+		return 1;
+	} else {
+		noAddOps++;
+		return fibonacciNumberTailRecursive(n - 1, noAddOps, acc);
+	}
 }
 
 bool testFibonacciNumberIterative() {
