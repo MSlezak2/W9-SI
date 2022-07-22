@@ -3,6 +3,7 @@
 class SinglyLinkedList {
 public:
 	SinglyLinkedList();
+	~SinglyLinkedList();
 	int getHead();
 	int getLength();
 	SinglyLinkedList getTail();

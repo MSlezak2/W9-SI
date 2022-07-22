@@ -7,6 +7,20 @@ SinglyLinkedList::SinglyLinkedList() {
 	length = 0;
 }
 
+SinglyLinkedList::~SinglyLinkedList() {
+	/*Node* currentNode;
+	Node* nextNode = head;
+
+	for (int i = 0; i < length - 1; i++) {
+		currentNode = nextNode;
+		nextNode = iterate(nextNode);
+		delete currentNode;
+	}*/
+	////TODO: The problem is that destructor is being invoked in getTail() method
+	// Should I change that method so it returns pointer to List ("new" etc.) or 
+	// is there another, better solution?
+}
+
 int SinglyLinkedList::getHead() {
 	// TODO: Handle situation when list is empty (exception or sth)
 	return head->data;

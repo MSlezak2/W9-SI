@@ -9,7 +9,26 @@ bool testFibonacciNumberIterative();
 bool testFibonacciNumberNaiveRecursive();
 bool testFibonacciNumberMemoizationRecursive();
 
+bool simpleTest() {
+	bool isCorrect = true;
+	int trash;
+
+	if (fibonacciNumberIterative(0, trash) != 0) {
+		isCorrect = false;
+	}
+	if (fibonacciNumberIterative(1, trash) != 1) {
+		isCorrect = false;
+	}
+	if (fibonacciNumberIterative(5, trash) != 5) {
+		isCorrect = false;
+	}
+	
+	return isCorrect;
+}
+
 int main() {
+
+	bool test = simpleTest();
 
 	std::cout << std::endl << "Iterative approach:\t" << testFibonacciNumberIterative() 
 		<< "\tO(n)" << std::endl << std::endl;

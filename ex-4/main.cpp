@@ -1,9 +1,20 @@
 #include "SinglyLinkedList.h"
 #include <iostream>
 
+//void test() {
+//	SinglyLinkedList list;
+//
+//	list.displayAll();
+//	//list.insert(1, 9);
+//	//list.insert(0, 7);
+//	list.append(1);
+//}
+
 int main() {
 
-	SinglyLinkedList list;
+	//test();
+
+	SinglyLinkedList list = SinglyLinkedList();
 
 	list.displayAll();
 	//list.insert(1, 9);
