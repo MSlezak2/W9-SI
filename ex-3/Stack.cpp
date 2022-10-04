@@ -1,5 +1,7 @@
 #include "Stack.h"
 #include <iostream>
+#include "StackOverflowException.h"
+#include "StackUnderflowException.h"
 
 Stack::Stack(int maxSize) {
 	this->maxSize = maxSize;
@@ -16,8 +18,8 @@ void Stack::push(int newElement) {
 		stack[currentSize] = newElement;
 		currentSize++;
 	} else {
-		std::cout << "Stack overflow" << std::endl;
-		//TODO: Throw an exception
+		//std::cout << "Stack overflow" << std::endl;
+		throw StackOverflowException(maxSize);
 	}
 }
 
@@ -30,9 +32,35 @@ int Stack::pop() {
 		stack[currentSize - 1] = 0;
 		currentSize--;
 	} else {
+		//std::cout << "Stack underflow" << std::endl;
+		throw StackUnderflowException();
+	}
+
+	return topMostElement;
+}
+
+int Stack::peek() {
+
+	int topMostElement = -HUGE_VAL;
+
+	if (currentSize > 0) {
+		topMostElement = stack[currentSize - 1];
+	} else {
 		std::cout << "Stack underflow" << std::endl;
 		//TODO: Throw an exception
 	}
 
 	return topMostElement;
+}
+
+int Stack::getCurrentSize() {
+	return currentSize;
+}
+
+int Stack::getMaxSize() {
+	return maxSize;
+}
+
+int Stack::getSpaceLeft() {
+	return maxSize - currentSize;
 }
