@@ -46,8 +46,8 @@ int Stack::peek() {
 	if (currentSize > 0) {
 		topMostElement = stack[currentSize - 1];
 	} else {
-		std::cout << "Stack underflow" << std::endl;
-		//TODO: Throw an exception
+		//std::cout << "Stack underflow" << std::endl;
+		throw StackUnderflowException();
 	}
 
 	return topMostElement;
